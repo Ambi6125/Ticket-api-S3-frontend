@@ -1,13 +1,8 @@
-import Message from "./components/Message";
-
-
+import TicketButton from "./components/TicketButton";
+import ListGroup from "./components/ListGroup";
 
 function App() {
-  return <>
-    <div>
-      <Message />
-    </div>
-  </>
+  return <></>;
 }
 
 export default App;
