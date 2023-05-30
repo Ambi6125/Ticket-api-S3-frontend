@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 const url = "http://localhost:8080/accounts/"
 
@@ -15,23 +15,42 @@ export const AccountAPI = {
         const concatURL = url+username;
         console.log("Searching: " + username + " at " + concatURL);
         return axios.get(concatURL, { headers: {Accept: 'application/json'}})
-        .then(response => {
-            console.log("Succes. See network tab for payload.")
-            return response.data
+        .then((response) => {
+            console.log("Succes. See network tab for payload.");
+            return response.data.account;
         })
         .catch(error => {
             console.log("ERROR OCCURED: " + error)
         })
     },
-    PostAccount: (account: Account): Promise<Object> =>{
+    PostAccount: (account: Account): Promise<CreateAccountResponse> =>{
         return axios.post(url)
         .then(response => response.data)
+        .catch(error => console.log(error))
+    },
+    UpdateAccount: (account: Account): Promise<UpdateAccountResponse> =>  {
+        return axios.put(url + account.id)
+        .then(response => {
+            console.log("Updated " + account.username);
+            return response.data;
+        })
         .catch(error => console.log(error))
     }
 }
 
 export interface GetAccountResponse{
     account: Account;
+}
+
+export interface UpdateAccountResponse {
+    targetId: number;
+    username: string;
+    password: string;
+    email: string;
+}
+
+export interface CreateAccountResponse {
+    id: number;
 }
 
 interface Account {

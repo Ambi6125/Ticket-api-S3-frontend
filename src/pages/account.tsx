@@ -31,5 +31,13 @@ export default function LoginPage(): JSX.Element {
 }
 
 export function RegisterPage(): JSX.Element {
-    return <h1>Register</h1>
+    const [tbUsername, setUsername] = useState()
+    return (
+        <>
+            <h1>Register</h1>
+            <form>
+                <input type="text" placeholder="username"/>
+            </form>
+        </>
+    )
 }
