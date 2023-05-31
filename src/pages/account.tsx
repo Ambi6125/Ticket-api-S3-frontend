@@ -18,8 +18,6 @@ export default function LoginPage(): JSX.Element {
     return AccountAPI.GetAccountByUsername(username);
   };
 
-  const [tbUsername, setUsername] = useState("");
-  const [tbPassword, setPassword] = useState("");
   const navigate = useNavigate();
   const validationSchema = Yup.object({
     tbUsername: Yup.string()
@@ -35,7 +33,7 @@ export default function LoginPage(): JSX.Element {
   return (
     <>
       <div className="d-flex align-items-center justify-content-center vh-100">
-        <div className="text-center">
+        <div className="text-center box-with-shadow">
           <h1>Log in</h1>
           <Formik
             initialValues={{ tbUsername: "", tbPassword: "" }}
@@ -46,24 +44,31 @@ export default function LoginPage(): JSX.Element {
           >
             {({ errors, touched }) => (
               <Form>
-                <Field
-                  name="tbUsername"
-                  placeholder="Username"
-                  autoComplete="current-username"
-                />
-                {errors.tbUsername && touched.tbUsername ? (
-                  <div>{errors.tbUsername}</div>
-                ) : null}
-                <Field
-                  name="tbPassword"
-                  type="password"
-                  placeholder="Password"
-                  autoComplete="current-password"
-                />
-                {errors.tbPassword && touched.tbPassword ? (
-                  <div>{errors.tbPassword}</div>
-                ) : null}
-                <button type="submit">Log in</button>
+                <div className="form-container">
+                  <div className="input-container">
+                    <Field
+                      name="tbUsername"
+                      placeholder="Username"
+                      autoComplete="current-username"
+                    />
+
+                    {errors.tbUsername && touched.tbUsername ? (
+                      <div>{errors.tbUsername}</div>
+                    ) : null}
+                  </div>
+                  <div className="input-container">
+                    <Field
+                      name="tbPassword"
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="current-password"
+                    />
+                    {errors.tbPassword && touched.tbPassword ? (
+                      <div>{errors.tbPassword}</div>
+                    ) : null}
+                  </div>
+                  <button type="submit">Log in</button>
+                </div>
               </Form>
             )}
           </Formik>
@@ -77,8 +82,12 @@ export function RegisterPage(): JSX.Element {
   const [tbUsername, setUsername] = useState("");
   const [tbPassword, setPassword] = useState("");
   const [tbEmail, setEmail] = useState("");
-  const handleRegisterClick = (): Promise<CreateAccountResponse> => {
-    return AccountAPI.PostAccount(tbUsername, tbPassword, tbEmail);
+  const handleRegisterClick = (
+    username: string,
+    password: string,
+    email: string
+  ): Promise<CreateAccountResponse> => {
+    return AccountAPI.PostAccount(username, password, email);
   };
 
   const validationSchema = Yup.object({
@@ -95,46 +104,69 @@ export function RegisterPage(): JSX.Element {
 
   return (
     <>
-      <h1>Register</h1>
-      <Formik
-        initialValues={{ tbUsername: "", tbPassword: "", tbEmail: "" }}
-        validationSchema={validationSchema}
-        onSubmit={handleRegisterClick}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <Field
-              name="tbUsername"
-              placeholder="Username"
-              autoComplete="username"
-            />
-            {errors.tbUsername && touched.tbUsername ? (
-              <div>{errors.tbUsername}</div>
-            ) : null}
-            <Field
-              name="tbPassword"
-              type="password"
-              placeholder="Password"
-              autoComplete="new-password"
-            />
-            {errors.tbPassword && touched.tbPassword ? (
-              <div>{errors.tbPassword}</div>
-            ) : null}
-            <Field
-              name="tbEmail"
-              type="email"
-              placeholder="Email"
-              autoComplete="email"
-            />
-            {errors.tbEmail && touched.tbEmail ? (
-              <div>{errors.tbEmail}</div>
-            ) : null}
-            <button type="submit" disabled={Object.keys(errors).length !== 0}>
-              Register
-            </button>
-          </Form>
-        )}
-      </Formik>
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="text-center box-with-shadow">
+          <h1>Register</h1>
+          <Formik
+            initialValues={{ tbUsername: "", tbPassword: "", tbEmail: "" }}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              handleRegisterClick(
+                values.tbUsername,
+                values.tbPassword,
+                values.tbEmail
+              ).then(() => {
+                setSubmitting(false);
+              });
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form>
+                <div className="form-container">
+                  <div className="input-container">
+                    <Field
+                      name="tbUsername"
+                      placeholder="Username"
+                      autoComplete="username"
+                    />
+                    {errors.tbUsername && touched.tbUsername ? (
+                      <div>{errors.tbUsername}</div>
+                    ) : null}
+                  </div>
+                  <div className="input-container">
+                    <Field
+                      name="tbPassword"
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="new-password"
+                    />
+                    {errors.tbPassword && touched.tbPassword ? (
+                      <div>{errors.tbPassword}</div>
+                    ) : null}
+                  </div>
+                  <div className="input-container">
+                    <Field
+                      name="tbEmail"
+                      type="email"
+                      placeholder="Email"
+                      autoComplete="email"
+                    />
+                    {errors.tbEmail && touched.tbEmail ? (
+                      <div>{errors.tbEmail}</div>
+                    ) : null}
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={Object.keys(errors).length !== 0}
+                  >
+                    Register
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
     </>
   );
 }
