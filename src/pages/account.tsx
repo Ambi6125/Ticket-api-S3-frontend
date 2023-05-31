@@ -1,43 +1,140 @@
-import "bootstrap/dist/css/bootstrap-grid.min.css"
+import "bootstrap/dist/css/bootstrap-grid.min.css";
 import DelegateButton from "../components/DelegateButton";
-import { AccountAPI, GetAccountResponse } from "../API/AccountAPI";
+import {
+  AccountAPI,
+  GetAccountResponse,
+  CreateAccountResponse,
+} from "../API/AccountAPI";
 import { useState } from "react";
+import * as Yup from "yup";
+import { Formik, Form, Field } from "formik";
+import { useNavigate } from "react-router-dom";
+import { event } from "cypress/types/jquery";
 
-
-const HandleLoginClick = (username: string): Promise<GetAccountResponse> => {
-    return AccountAPI.GetAccountByUsername(username)
-}
+//TODO: Use Yup and Formik
 
 export default function LoginPage(): JSX.Element {
+  const HandleLoginClick = (username: string): Promise<GetAccountResponse> => {
+    return AccountAPI.GetAccountByUsername(username);
+  };
 
-    const [tbUsername, setUsername] = useState("");
-    const [tbPassword, setPassword] = useState("");
+  const [tbUsername, setUsername] = useState("");
+  const [tbPassword, setPassword] = useState("");
+  const navigate = useNavigate();
+  const validationSchema = Yup.object({
+    tbUsername: Yup.string()
+      .min(4, "Must be at least 4 characters long.")
+      .max(50, "Not more than 50 characters.")
+      .required("Required."),
+    tbPassword: Yup.string()
+      .min(8, "Must be at least 8 characters long.")
+      .max(60, "No more than 60 characters.")
+      .required("Required."),
+  });
 
-    return (
-        <>
-            <div className="d-flex align-items-center justify-content-center vh-100">
-                <div className="text-center">
-                    <h1>Log in</h1>
-                    <form>
-                        <input type="text" placeholder="Username" onChange={event => setUsername(event.target.value)} autoComplete="current-username"/>
-                        <input type="password" placeholder="Password" onChange={event => setPassword(event.target.value)} autoComplete="current-password" />
-
-                       <DelegateButton delegate={HandleLoginClick} args={[tbUsername]} buttonType="secondary">Log in</DelegateButton>
-                    </form>
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        <div className="text-center">
+          <h1>Log in</h1>
+          <Formik
+            initialValues={{ tbUsername: "", tbPassword: "" }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              HandleLoginClick(values.tbUsername);
+            }}
+          >
+            {({ errors, touched }) => (
+              <Form>
+                <Field
+                  name="tbUsername"
+                  placeholder="Username"
+                  autoComplete="current-username"
+                />
+                {errors.tbUsername && touched.tbUsername ? (
+                  <div>{errors.tbUsername}</div>
+                ) : null}
+                <Field
+                  name="tbPassword"
+                  type="password"
+                  placeholder="Password"
+                  autoComplete="current-password"
+                />
+                {errors.tbPassword && touched.tbPassword ? (
+                  <div>{errors.tbPassword}</div>
+                ) : null}
+                <button type="submit">Log in</button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export function RegisterPage(): JSX.Element {
-    const [tbUsername, setUsername] = useState()
-    return (
-        <>
-            <h1>Register</h1>
-            <form>
-                <input type="text" placeholder="username"/>
-            </form>
-        </>
-    )
+  const [tbUsername, setUsername] = useState("");
+  const [tbPassword, setPassword] = useState("");
+  const [tbEmail, setEmail] = useState("");
+  const handleRegisterClick = (): Promise<CreateAccountResponse> => {
+    return AccountAPI.PostAccount(tbUsername, tbPassword, tbEmail);
+  };
+
+  const validationSchema = Yup.object({
+    tbUsername: Yup.string()
+      .min(4, "Must be at least 4 characters long.")
+      .max(50, "Not more than 50 characters.")
+      .required("Please enter a username."),
+    tbPassword: Yup.string()
+      .min(8, "Must be at least 8 characters long.")
+      .max(60, "No more than 60 characters.")
+      .required("Password is required."),
+    tbEmail: Yup.string().email("Invalid email address.").required("Required."),
+  });
+
+  return (
+    <>
+      <h1>Register</h1>
+      <Formik
+        initialValues={{ tbUsername: "", tbPassword: "", tbEmail: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleRegisterClick}
+      >
+        {({ errors, touched }) => (
+          <Form>
+            <Field
+              name="tbUsername"
+              placeholder="Username"
+              autoComplete="username"
+            />
+            {errors.tbUsername && touched.tbUsername ? (
+              <div>{errors.tbUsername}</div>
+            ) : null}
+            <Field
+              name="tbPassword"
+              type="password"
+              placeholder="Password"
+              autoComplete="new-password"
+            />
+            {errors.tbPassword && touched.tbPassword ? (
+              <div>{errors.tbPassword}</div>
+            ) : null}
+            <Field
+              name="tbEmail"
+              type="email"
+              placeholder="Email"
+              autoComplete="email"
+            />
+            {errors.tbEmail && touched.tbEmail ? (
+              <div>{errors.tbEmail}</div>
+            ) : null}
+            <button type="submit" disabled={Object.keys(errors).length !== 0}>
+              Register
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </>
+  );
 }

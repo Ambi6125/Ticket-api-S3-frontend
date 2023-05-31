@@ -23,8 +23,8 @@ export const AccountAPI = {
             console.log("ERROR OCCURED: " + error)
         })
     },
-    PostAccount: (account: Account): Promise<CreateAccountResponse> =>{
-        return axios.post(url)
+    PostAccount: (username: string, password: string, email: string): Promise<CreateAccountResponse> =>{
+        return axios.post(url, { username, password, email })
         .then(response => response.data)
         .catch(error => console.log(error))
     },
