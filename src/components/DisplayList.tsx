@@ -19,7 +19,7 @@ export default function DisplayList({ title, items, enumerate = true }: DisplayL
 
   return (
     <div>
-      <h2>{title}</h2>
+      <h2>{title}</h2> 
       <ul className="list-group">
             {enumerationFunction(items)}
       </ul>

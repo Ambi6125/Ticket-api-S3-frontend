@@ -5,7 +5,7 @@ interface DelegateButtonProps<TResult> {
     children: ReactNode;
     delegate: (...args: any[]) => TResult
     args?: any[]
-    buttonType?: "primary" | "secondary" | "waning"
+    buttonType?: "primary" | "secondary" | "warning"
 }
 
 

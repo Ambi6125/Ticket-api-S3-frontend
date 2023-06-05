@@ -4,84 +4,46 @@ import {
   AccountAPI,
   GetAccountResponse,
   CreateAccountResponse,
+  Account,
 } from "../API/AccountAPI";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
-import { useNavigate } from "react-router-dom";
-import { event } from "cypress/types/jquery";
-
-//TODO: Use Yup and Formik
+import { LoginAPI } from "../API/LoginAPI";
+import TokenManager from "../API/TokenManager";
+import LogInForm from "../components/LoginForm";
+import { Profile } from "./profile";
 
 export default function LoginPage(): JSX.Element {
-  const HandleLoginClick = (username: string): Promise<GetAccountResponse> => {
-    return AccountAPI.GetAccountByUsername(username);
+  const [claims, setClaims] = useState(TokenManager.getClaims());
+  const [userInfo, setUserInfo] = useState<Account>();
+
+  const HandleLoginClick = (username: string, password: string) => {
+    LoginAPI.login(username, password)
+      .catch(() => alert("Invalid Credentials."))
+      .then((claims) => setClaims(claims))
+      .then(getUserInfo)
+      .catch((error) => console.log(error));
   };
 
-  const navigate = useNavigate();
-  const validationSchema = Yup.object({
-    tbUsername: Yup.string()
-      .min(4, "Must be at least 4 characters long.")
-      .max(50, "Not more than 50 characters.")
-      .required("Required."),
-    tbPassword: Yup.string()
-      .min(8, "Must be at least 8 characters long.")
-      .max(60, "No more than 60 characters.")
-      .required("Required."),
-  });
-
+  useEffect(() => {
+    getUserInfo();
+}, [claims]);
+  
+  const getUserInfo = () => {
+    const receivedClaims = TokenManager.getClaims();
+    if (receivedClaims?.roles?.includes("ADMIN" || "USER") && receivedClaims?.accountId) {
+      AccountAPI.GetAccountById(receivedClaims.accountId)
+        .then((account) => setUserInfo(account.account))
+        .catch((error) => console.error(error));
+    }
+  };
   return (
-    <>
-      <div className="d-flex align-items-center justify-content-center vh-100">
-        <div className="text-center box-with-shadow">
-          <h1>Log in</h1>
-          <Formik
-            initialValues={{ tbUsername: "", tbPassword: "" }}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              HandleLoginClick(values.tbUsername);
-            }}
-          >
-            {({ errors, touched }) => (
-              <Form>
-                <div className="form-container">
-                  <div className="input-container">
-                    <Field
-                      name="tbUsername"
-                      placeholder="Username"
-                      autoComplete="current-username"
-                    />
-
-                    {errors.tbUsername && touched.tbUsername ? (
-                      <div>{errors.tbUsername}</div>
-                    ) : null}
-                  </div>
-                  <div className="input-container">
-                    <Field
-                      name="tbPassword"
-                      type="password"
-                      placeholder="Password"
-                      autoComplete="current-password"
-                    />
-                    {errors.tbPassword && touched.tbPassword ? (
-                      <div>{errors.tbPassword}</div>
-                    ) : null}
-                  </div>
-                  <button type="submit">Log in</button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </div>
-    </>
+    <div>{claims ? <Profile /> : <LogInForm onLogin={HandleLoginClick} />}</div>
   );
 }
 
 export function RegisterPage(): JSX.Element {
-  const [tbUsername, setUsername] = useState("");
-  const [tbPassword, setPassword] = useState("");
-  const [tbEmail, setEmail] = useState("");
   const handleRegisterClick = (
     username: string,
     password: string,

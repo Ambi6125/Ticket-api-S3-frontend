@@ -45,7 +45,6 @@ export interface GetAccountResponse{
 export interface UpdateAccountResponse {
     targetId: number;
     username: string;
-    password: string;
     email: string;
 }
 
@@ -53,10 +52,9 @@ export interface CreateAccountResponse {
     id: number;
 }
 
-interface Account {
+export interface Account {
     id: number;
     username: string;
-    password: string;
     email: string;
 }
 
