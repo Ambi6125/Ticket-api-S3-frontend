@@ -1,4 +1,5 @@
 import axios from "axios";
+import { constant } from "cypress/types/lodash";
 
 const url = "http://localhost:8080/events/";
 
@@ -34,11 +35,23 @@ export const EventAPI = {
       })
       .catch((error) => console.log(error));
   },
+  GetEventsOnSearch: (text: string): Promise<GetEventsResponse> => {
+    const concatURL = url + "search/" + text;
+    return axios
+      .get(concatURL, { headers: { Accept: "application/json" } })
+      .then((response) => {
+        const resultArray: any = response.data.events;
+        console.log(resultArray);
+        return resultArray;
+      })
+      .catch((error) => console.log(error));
+  },
 };
 
 export interface EventObject {
   id: number;
   title: string;
+  artist: string;
   location: string;
   moment: Date;
   totalTickets: number;
@@ -47,6 +60,10 @@ export interface EventObject {
 
 export interface GetEventRequest {
   event: EventObject;
+}
+
+export interface GetEventsResponse {
+  events: EventObject[];
 }
 
 export default EventAPI;

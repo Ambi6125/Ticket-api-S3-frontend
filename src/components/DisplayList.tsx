@@ -6,7 +6,7 @@ interface DisplayListProps {
   enumerate?: boolean;
 }
 
-export default function DisplayList({ title, items, enumerate = true }: DisplayListProps) {
+export default function DisplayList({ title, items, enumerate = true }: DisplayListProps): JSX.Element {
   const enumeratedList = (items: any[]) =>
     items.map((item, index) => (
       <li className="list-group-item">{index + 1 + ". " + item}</li>

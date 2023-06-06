@@ -1,25 +1,24 @@
-import DelegateButton from "../components/DelegateButton";
+import DelegateButton from "./DelegateButton";
 import { TICKET_PERCENTAGE_THRESHOLD } from "../misc/GLOBAL";
 import { Link } from "react-router-dom";
+import { EventObject } from "../API/EventAPI";
 
-interface Event {
-  id: number;
-  title: string;
-  artist: string;
-  location: string;
-  moment: Date;
-  totalTickets: number;
-  remainingTickets: number;
-}
+
+
 
 interface EventListProps {
-  items: Event[];
+  items: EventObject[];
 }
 
 interface EventItemProps {
-  event: Event;
+  event: EventObject;
 }
 
+/**
+ * This component displays a box with information about a single event.
+ * @param event The event to display in this box.
+ * @returns A functional, reusable component.
+ */
 function EventItem({ event }: EventItemProps): JSX.Element {
   const {
     id,
@@ -33,7 +32,7 @@ function EventItem({ event }: EventItemProps): JSX.Element {
 
   const ticketThreshold = (remainingTickets / totalTickets) * 100;
 
-  function HandleClick(id: number): void {}
+
 
   return (
     <div id={"event:" + id} className="eventBox">
@@ -52,11 +51,18 @@ function EventItem({ event }: EventItemProps): JSX.Element {
         <p>Limited tickets left!</p>
       )}
 
-      <Link to={`/event/${id}`}>View Event</Link>
+      <Link to={`/event/${id}`}>
+        <button>View Event</button>
+      </Link>
     </div>
   );
 }
 
+/**
+ * A component that automatically renders components of type EventItem for every event provided, and displays them.
+ * @param events All events to be displayed.
+ * @returns A functional, reusable component.
+ */
 export default function EventList({ items }: EventListProps): JSX.Element {
   return (
     <>

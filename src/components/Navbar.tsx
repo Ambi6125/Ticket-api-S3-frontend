@@ -9,6 +9,7 @@ export default function Navbar() {
             Ticket Exhange
         </Link>
         <ul>
+            <Anchor href="/events">Events</Anchor>
             <Anchor href="/login">Log In</Anchor>
             <Anchor href="/register">Register</Anchor>
         </ul>
