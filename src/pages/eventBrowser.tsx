@@ -8,22 +8,21 @@ import { useState } from "react";
  * @returns A page component to browse through EventObjects.
  */
 export default function EventBrowser(): JSX.Element {
-  const [events, setEvents] = useState<EventObject[]>([]);
+  const [responseEntities, setResponseEntities] = useState<EventObject[]>([]); //Events in this array are passed down to the event list.
 
-  const handleSearch = async (searchText: string): Promise<EventObject[]> => {
-    const searchResults = await EventAPI.GetEventsOnSearch(searchText);
-    return searchResults.events;
+  const putReceivedDataInUseState = (data: any) => {
+    console.log(data);
+    setResponseEntities(data);
   };
 
   return (
-    <div>
-      <div className="box-with-shadow">
-        <SearchBar<EventObject[]>
-          searchMethod={handleSearch}
-          onSubmit={(searchResults) => setEvents(searchResults)}
+    <div className="eventBrowserContainer">
+        <SearchBar
+          responseCatcher={putReceivedDataInUseState}
+          searchMethod={EventAPI.GetEventsOnSearch}
+          searchBarText="Enter an event title or location."
         />
-      </div>
-      <EventList items={events} />
+      <EventList items={responseEntities} />
     </div>
   );
 }

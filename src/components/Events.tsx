@@ -3,9 +3,6 @@ import { TICKET_PERCENTAGE_THRESHOLD } from "../misc/GLOBAL";
 import { Link } from "react-router-dom";
 import { EventObject } from "../API/EventAPI";
 
-
-
-
 interface EventListProps {
   items: EventObject[];
 }
@@ -19,33 +16,22 @@ interface EventItemProps {
  * @param event The event to display in this box.
  * @returns A functional, reusable component.
  */
-function EventItem({ event }: EventItemProps): JSX.Element {
-  const {
-    id,
-    title,
-    artist,
-    location,
-    moment,
-    totalTickets,
-    remainingTickets,
-  } = event;
+function EventItemBox({ event }: EventItemProps): JSX.Element {
+  const { id, title, artist, location, totalTickets, remainingTickets } = event;
+
+  const moment = new Date(event.moment);
+
+  console.log(`${moment} (${typeof moment})`);
 
   const ticketThreshold = (remainingTickets / totalTickets) * 100;
 
-
-
   return (
-    <div id={"event:" + id} className="eventBox">
+    <div className="eventBox">
       <h2>{title}</h2>
       <h3>{artist}</h3>
       <br />
       <p>
-        {location} at
-        {moment.toDateString() +
-          " " +
-          moment.getHours() +
-          ":" +
-          moment.getMinutes()}
+        {`${location},\nat ${moment.getDay()}/${moment.getMonth()}/${moment.getFullYear()} - ${moment.getHours()}:${moment.getMinutes()}`}
       </p>
       {ticketThreshold < TICKET_PERCENTAGE_THRESHOLD && ticketThreshold > 0 && (
         <p>Limited tickets left!</p>
@@ -60,16 +46,28 @@ function EventItem({ event }: EventItemProps): JSX.Element {
 
 /**
  * A component that automatically renders components of type EventItem for every event provided, and displays them.
+ * The key for every item is "event-x", where x is the id of the event itself.
  * @param events All events to be displayed.
  * @returns A functional, reusable component.
  */
 export default function EventList({ items }: EventListProps): JSX.Element {
+  if (typeof items === "undefined" || items.length === 0) {
+    return (
+      <>
+        <h2>No events found.</h2>
+        <p>Try again with another search term.</p>
+      </>
+    );
+  }
+
   return (
     <>
-      <div className="eventDisplayList">
+      <div className="eventListHeader">
         <h2>Events</h2>
+      </div>
+      <div className="eventDisplayList">
         {items.map((item) => (
-          <EventItem event={item} />
+          <EventItemBox key={"event-" + item.id} event={item} />
         ))}
       </div>
     </>

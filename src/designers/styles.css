@@ -72,3 +72,112 @@ body {
   align-items: center;
   margin-bottom: 1rem;
 }
+
+/* Event search page */
+
+.eventBrowserContainer {
+  border: 1px solid #2c2d6b;
+  padding: 10px;
+  border-width: medium;
+}
+
+.searchbar {
+  margin-bottom: 1rem;
+}
+
+.eventDisplayList {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 10px;
+  justify-content: space-evenly;
+}
+
+.eventListHeader {
+  margin-bottom: 10px;
+}
+
+.eventBox {
+  width: 300px;
+  border: 1px solid black;
+  padding: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 15%;
+  box-shadow: #555;
+}
+
+.eventBox h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.eventBox h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.eventBox p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Custom styles for the search bar */
+.searchbar input[type="text"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+.searchbar button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.searchbar button:hover {
+  background-color: #45a049;
+}
+
+/* Custom styles for the event list */
+.eventDisplayList h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Custom styles for the event item */
+.eventBox h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.eventBox h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+.eventBox p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #777;
+}
+
+.eventBox button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.eventBox button:hover {
+  background-color: #45a049;
+}
