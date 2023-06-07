@@ -11,7 +11,6 @@ export default function EventBrowser(): JSX.Element {
   const [responseEntities, setResponseEntities] = useState<EventObject[]>([]); //Events in this array are passed down to the event list.
 
   const putReceivedDataInUseState = (data: any) => {
-    console.log(data);
     setResponseEntities(data);
   };
 

@@ -21,8 +21,6 @@ function EventItemBox({ event }: EventItemProps): JSX.Element {
 
   const moment = new Date(event.moment);
 
-  console.log(`${moment} (${typeof moment})`);
-
   const ticketThreshold = (remainingTickets / totalTickets) * 100;
 
   return (

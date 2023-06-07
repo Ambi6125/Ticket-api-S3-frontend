@@ -17,8 +17,7 @@ export function Profile(): JSX.Element {
     const receivedClaims = TokenManager.getClaims();
     console.log(receivedClaims);
     if (
-      receivedClaims?.roles?.includes("ADMIN" || "USER") &&
-      receivedClaims?.accountId
+      receivedClaims?.roles?.includes("ADMIN" || "USER")
     ) {
       AccountAPI.GetAccountById(receivedClaims.accountId)
         .then((account) => setUserInfo(account.account))
@@ -27,6 +26,7 @@ export function Profile(): JSX.Element {
   };
 
   function HandleLogout() {
+    console.log("Logging out");
     TokenManager.clear();
     setClaims(null);
     setUserInfo(null);

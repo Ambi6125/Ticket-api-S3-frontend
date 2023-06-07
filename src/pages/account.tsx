@@ -28,11 +28,15 @@ export default function LoginPage(): JSX.Element {
 
   useEffect(() => {
     getUserInfo();
-}, [claims]);
-  
+  }, [claims]);
+
   const getUserInfo = () => {
     const receivedClaims = TokenManager.getClaims();
-    if (receivedClaims?.roles?.includes("ADMIN" || "USER") && receivedClaims?.accountId) {
+    if (
+      (receivedClaims?.roles?.includes("ADMIN") ||
+        receivedClaims?.roles?.includes("USER")) &&
+      receivedClaims?.accountId
+    ) {
       AccountAPI.GetAccountById(receivedClaims.accountId)
         .then((account) => setUserInfo(account.account))
         .catch((error) => console.error(error));
@@ -49,7 +53,14 @@ export function RegisterPage(): JSX.Element {
     password: string,
     email: string
   ): Promise<CreateAccountResponse> => {
-    return AccountAPI.PostAccount(username, password, email);
+    return AccountAPI.PostAccount(username, password, email).then(
+      (response) => {
+        if (response.id !== null) {
+          alert("Registration successful");
+        }
+        return response;
+      }
+    );
   };
 
   const validationSchema = Yup.object({

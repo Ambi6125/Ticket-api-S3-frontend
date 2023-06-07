@@ -1,8 +1,19 @@
-import { Children, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Children, ReactNode, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import TokenManager from "../API/TokenManager";
 
 
 export default function Navbar() {
+
+    const navigate = useNavigate();
+    const [claims, setClaims] = useState(TokenManager.getClaims());
+
+    const HandleLogout = () => {
+        TokenManager.clear();
+        setClaims(null);
+        navigate("/");
+    }
+
     return (
     <nav className="nav">
         <Link to="/" className="site-title">
@@ -10,7 +21,7 @@ export default function Navbar() {
         </Link>
         <ul>
             <Anchor href="/events">Events</Anchor>
-            <Anchor href="/login">Log In</Anchor>
+            {TokenManager.getAccessToken() ? <button onClick={HandleLogout}>Log out</button> : <Anchor href="/login">Log In</Anchor>}
             <Anchor href="/register">Register</Anchor>
         </ul>
     </nav>

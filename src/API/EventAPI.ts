@@ -9,7 +9,7 @@ export const EventAPI = {
       .get(url + id.toString())
       .then((response) => {
         console.log("Received: " + response);
-        return response.data.event;
+        return response.data;
       })
       .catch((error) => {
         console.log(error);
