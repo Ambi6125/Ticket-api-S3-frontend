@@ -4,7 +4,7 @@ const url = "http://localhost:8080/accounts/"
 
 export const AccountAPI = {
     GetAccountById: (id: number): Promise<GetAccountResponse> => {
-        return axios.get(url+id)
+        return axios.get(`${url}id/${id}`)
         .then((response) => {
             console.log(response.data);
             return response.data

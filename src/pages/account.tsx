@@ -13,22 +13,40 @@ import { LoginAPI } from "../API/LoginAPI";
 import TokenManager from "../API/TokenManager";
 import LogInForm from "../components/LoginForm";
 import { Profile } from "./profile";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(): JSX.Element {
   const [claims, setClaims] = useState(TokenManager.getClaims());
   const [userInfo, setUserInfo] = useState<Account>();
 
+  const navigate = useNavigate();
+
   const HandleLoginClick = (username: string, password: string) => {
     LoginAPI.login(username, password)
       .catch(() => alert("Invalid Credentials."))
-      .then((claims) => setClaims(claims))
+      .then((claims) => {
+        setClaims(claims);
+        navigate("/profile"); // add this line to redirect the user to the profile page after a successful login attempt
+      })
       .then(getUserInfo)
       .catch((error) => console.log(error));
   };
 
   useEffect(() => {
+    if (TokenManager.getAccessToken()) {
+      navigate("/profile");
+    }
+
+    const receivedClaims = TokenManager.getClaims();
+    if (
+      (receivedClaims?.roles?.includes("ADMIN") ||
+        receivedClaims?.roles?.includes("USER")) &&
+      receivedClaims?.accountId
+    ) {
+      navigate("/profile"); // add this line to redirect the user to the profile page if they are already logged in
+    }
     getUserInfo();
-  }, [claims]);
+  }, [claims, navigate]);
 
   const getUserInfo = () => {
     const receivedClaims = TokenManager.getClaims();
@@ -42,12 +60,17 @@ export default function LoginPage(): JSX.Element {
         .catch((error) => console.error(error));
     }
   };
+
   return (
-    <div>{claims ? <Profile /> : <LogInForm onLogin={HandleLoginClick} />}</div>
+    <div>
+      <LogInForm onLogin={HandleLoginClick} />
+    </div>
   );
 }
 
 export function RegisterPage(): JSX.Element {
+  const navigate = useNavigate();
+
   const handleRegisterClick = (
     username: string,
     password: string,
@@ -57,6 +80,7 @@ export function RegisterPage(): JSX.Element {
       (response) => {
         if (response.id !== null) {
           alert("Registration successful");
+          navigate("/login");
         }
         return response;
       }

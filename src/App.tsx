@@ -18,7 +18,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/events" element={<EventBrowser />} />
           <Route path="/event/:id" element={<EventPage />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </>

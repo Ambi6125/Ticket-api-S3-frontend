@@ -133,7 +133,7 @@ body {
 }
 
 .searchbar button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 12px 20px;
   border: none;
@@ -170,7 +170,7 @@ body {
 }
 
 .eventBox button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 8px 16px;
   border: none;
@@ -180,4 +180,27 @@ body {
 
 .eventBox button:hover {
   background-color: #45a049;
+}
+
+/* Profile Page */
+
+.profile-container {
+  background-color: #335483;
+  color: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.my-ticket-container {
+  background-color: #4cb2fb;
+  border-radius: 1.5rem;
+  color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.my-ticket-container h2 {
+  padding-bottom: 1rem;
 }

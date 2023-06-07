@@ -21,8 +21,8 @@ export default function Navbar() {
         </Link>
         <ul>
             <Anchor href="/events">Events</Anchor>
-            {TokenManager.getAccessToken() ? <button onClick={HandleLogout}>Log out</button> : <Anchor href="/login">Log In</Anchor>}
-            <Anchor href="/register">Register</Anchor>
+            {TokenManager.getAccessToken() ? <Anchor href="/profile">Profile</Anchor> : <Anchor href="/login">Log In</Anchor>}
+            {!TokenManager.getAccessToken() && <Anchor href="/register">Register</Anchor>}
         </ul>
     </nav>
     )

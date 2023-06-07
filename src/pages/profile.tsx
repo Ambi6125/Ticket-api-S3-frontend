@@ -10,14 +10,18 @@ export function Profile(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!TokenManager.getAccessToken()) {
+      navigate("/login");
+    }
     getUserInfo();
   }, [claims]);
 
   const getUserInfo = () => {
     const receivedClaims = TokenManager.getClaims();
-    console.log(receivedClaims);
+
     if (
-      receivedClaims?.roles?.includes("ADMIN" || "USER")
+      receivedClaims?.roles?.includes("ADMIN") ||
+      receivedClaims?.roles.includes("USER")
     ) {
       AccountAPI.GetAccountById(receivedClaims.accountId)
         .then((account) => setUserInfo(account.account))
@@ -35,10 +39,19 @@ export function Profile(): JSX.Element {
 
   return (
     <>
-      <h1>Profile</h1>
-      <h2>Welcome, {userInfo?.username}</h2>
+      <div>
+        <div className="profile-container">
+          <h1>Profile</h1>
+          <h2>Welcome, {userInfo?.username}</h2>
+          <h3>Email: {userInfo?.email}</h3>
+        </div>
 
-      <button onClick={HandleLogout}>Log out</button>
+        <div className="my-ticket-container">
+          <h2>My tickets</h2>
+        </div>
+
+        <button onClick={HandleLogout}>Log out</button>
+      </div>
     </>
   );
 }
