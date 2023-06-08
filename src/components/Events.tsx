@@ -2,6 +2,7 @@ import DelegateButton from "./DelegateButton";
 import { TICKET_PERCENTAGE_THRESHOLD } from "../misc/GLOBAL";
 import { Link } from "react-router-dom";
 import { EventObject } from "../API/EventAPI";
+import TokenManager from "../API/TokenManager";
 
 interface EventListProps {
   items: EventObject[];
@@ -26,10 +27,10 @@ function EventItemBox({ event }: EventItemProps): JSX.Element {
   return (
     <div className="eventBox">
       <h2>{title}</h2>
-      <h3>{artist}</h3>
+      <p>{TokenManager.getClaims().roles?.includes("ADMIN") && id}</p>
       <br />
       <p>
-        {`${location},\nat ${moment.getDay()}/${moment.getMonth()}/${moment.getFullYear()} - ${moment.getHours()}:${moment.getMinutes()}`}
+        {`${location},\nat ${moment.getDay()}/${moment.getMonth() + 1}/${moment.getFullYear()} - ${moment.getHours()}:${moment.getMinutes()}`}
       </p>
       {ticketThreshold < TICKET_PERCENTAGE_THRESHOLD && ticketThreshold > 0 && (
         <p>Limited tickets left!</p>

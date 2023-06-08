@@ -11,13 +11,12 @@ interface EventDetailsProps {
 }
 
 function EventDetails({ target }: EventDetailsProps): JSX.Element {
-
   const dateTime: Date = new Date(target.moment);
   const navigate = useNavigate();
   const handleBuyTicketsClick = () => {
-    navigate(`/events/${target.id}/tickets`)
-  }
-  
+    navigate(`/event/${target.id}/tickets`);
+  };
+
   return (
     <div className="event-details-container">
       <h3>{target.title}</h3>
@@ -29,7 +28,9 @@ function EventDetails({ target }: EventDetailsProps): JSX.Element {
         }/${dateTime.getFullYear()}`}
       </p>
       <p>Time: {`${dateTime.getHours()}:${dateTime.getMinutes()}`}</p>
-      {TokenManager.getAccessToken() && <button onClick={handleBuyTicketsClick}>Buy Tickets</button>}
+      {TokenManager.getAccessToken() && (
+        <button onClick={handleBuyTicketsClick}>Buy Tickets</button>
+      )}
     </div>
   );
 }

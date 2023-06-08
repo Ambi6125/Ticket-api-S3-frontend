@@ -39,9 +39,11 @@ export function Profile(): JSX.Element {
 
   return (
     <>
-      <div>
+      <div className="profile-page-container">
         <div className="profile-container">
           <h1>Profile</h1>
+          < br/>
+          < br/>
           <h2>Welcome, {userInfo?.username}</h2>
           <h3>Email: {userInfo?.email}</h3>
         </div>
@@ -50,7 +52,7 @@ export function Profile(): JSX.Element {
           <h2>My tickets</h2>
         </div>
 
-        <button onClick={HandleLogout}>Log out</button>
+        <button className="standard-button" onClick={HandleLogout}>Log out</button>
       </div>
     </>
   );

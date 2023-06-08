@@ -57,6 +57,7 @@ body {
   background-color: #777;
 }
 
+
 .box-with-shadow {
   display: flex;
   flex-direction: column;
@@ -72,6 +73,17 @@ body {
   align-items: center;
   margin-bottom: 1rem;
 }
+
+.standard-button {
+  background-color: #9bbceb;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0.3rem 4px 20px rgb(161, 200, 225);
+}
+
 
 /* Event search page */
 
@@ -208,21 +220,31 @@ body {
 
 /* Profile Page */
 
+.profile-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .profile-container {
+  width: 90%;
   background-color: #335483;
   color: white;
   border: 1px solid #ddd;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5%;
   border-radius: 1rem;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 13px 10px 30px rgb(72, 169, 255);
 }
 
 .my-ticket-container {
+  width: 50%;
   background-color: #4cb2fb;
   border-radius: 1.5rem;
   color: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 50px rgb(52, 186, 244);
+  margin-bottom: 2rem;
 }
 
 .my-ticket-container h2 {
