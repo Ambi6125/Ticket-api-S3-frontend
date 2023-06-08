@@ -1,13 +1,22 @@
-import { EventObject } from "../API/EventAPI";
+import { useEffect, useState } from "react";
+import EventAPI, { EventObject } from "../API/EventAPI";
+import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+import TokenManager from "../API/TokenManager";
 
-interface BuyTicketsPageProps {
-  target: EventObject;
-}
+export default function BuyTicketsPage(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const idNumber: number = parseInt(id ?? "-1");
 
-function BuyTicketsPage({ target }: BuyTicketsPageProps): JSX.Element {
+  const [subject, setSubject] = useState<EventObject>();
+  useEffect(() => {
+    const readResult = EventAPI.GetEventById(idNumber).then(response => {return response.event});
+    console.log(typeof readResult + readResult);
+    
+  });
   return (
-    <p>
-      Left: {target.remainingTickets}/{target.totalTickets}
-    </p>
+    <>
+      <input type="number" min={1} max={subject?.remainingTickets}></input>
+    </>
   );
 }

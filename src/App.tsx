@@ -6,6 +6,7 @@ import "./designers/styles.css";
 import { EventPage } from "./pages/eventPage";
 import { Profile } from "./pages/profile";
 import EventBrowser from "./pages/eventBrowser";
+import BuyTicketsPage from "./pages/buytickets";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/events" element={<EventBrowser />} />
           <Route path="/event/:id" element={<EventPage />} />
+          <Route path="/event/:id/tickets" element={<BuyTicketsPage />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
