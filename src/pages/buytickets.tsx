@@ -8,15 +8,45 @@ export default function BuyTicketsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const idNumber: number = parseInt(id ?? "-1");
 
-  const [subject, setSubject] = useState<EventObject>();
+  const [subject, setSubject] = useState<EventObject | undefined>();
   useEffect(() => {
-    const readResult = EventAPI.GetEventById(idNumber).then(response => {return response.event});
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    const readResult = await EventAPI.GetEventById(idNumber).then(
+      (response) => {
+        setSubject(response.event);
+      }
+    );
     console.log(typeof readResult + readResult);
-    
-  });
+  };
+
+  /**
+   * Calculates the maximum tickets that can be purchased, which is the biggest possible of the following set:
+   * {  T / 4, remaining T, 5 }
+   */
+  function getMaxValue(remainingTickets: number): number {
+    if (remainingTickets < 5) {
+      return remainingTickets;
+    }
+    return Math.max(5, Math.floor(remainingTickets / 4));
+  }
+
   return (
     <>
-      <input type="number" min={1} max={subject?.remainingTickets}></input>
+      {subject && (
+        <div className="purchase-ticket-container">
+          <h2>Purchase Tickets for {subject.title}</h2>
+          <input
+            type="number"
+            min={1}
+            max={getMaxValue(subject.remainingTickets)}
+            placeholder="Amount"
+          />
+          <button onClick={() => console.log("Not implemented")}>Buy</button>
+        </div>
+      )}
     </>
   );
 }

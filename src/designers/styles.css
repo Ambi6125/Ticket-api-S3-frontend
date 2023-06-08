@@ -57,7 +57,6 @@ body {
   background-color: #777;
 }
 
-
 .box-with-shadow {
   display: flex;
   flex-direction: column;
@@ -83,7 +82,6 @@ body {
   cursor: pointer;
   box-shadow: 0.3rem 4px 20px rgb(161, 200, 225);
 }
-
 
 /* Event search page */
 
@@ -250,3 +248,38 @@ body {
 .my-ticket-container h2 {
   padding-bottom: 1rem;
 }
+
+/* Ticket purchasing page */
+
+.purchase-ticket-container {
+  border: #5170b4;
+  background-color: #4cb2fb;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  justify-self: center;
+}
+
+.purchase-ticket-container button {
+  background-color: #5170b4;
+  color: white;
+  border-radius: 4%;
+  border-style: none;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 0.3%;
+}
+
+.purchase-ticket-container input {
+  width: 40%;
+  border-color: #80bfff;
+  border-style: inset;
+  border-width: 3px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8%;
+}
+
