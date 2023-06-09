@@ -1,14 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
 import EventAPI, { EventObject, GetEventsResponse } from "../API/EventAPI";
-import SearchBar from "../components/SearchBar";
-import EventList from "../components/Events";
+import SearchBar from "./SearchBar";
+import EventList from "./Events";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
 import TokenManager from "../API/TokenManager";
 import { useNavigate } from "react-router";
 import { values } from "cypress/types/lodash";
 
-export function EventManagementPage(): JSX.Element {
+/**
+ * @deprecated
+ */
+export function EventManagementOldComponent(): JSX.Element {
   const [searchResult, setSearchResult] = useState<EventObject[]>([]);
   const [responseMessage, setMessage] = useState<string>("");
 
@@ -76,7 +79,7 @@ export function EventManagementPage(): JSX.Element {
             values.nmudTotalTickets
           )
             .then(() => {
-              setMessage("Succesfully created.");
+              setMessage("Succesfully created " + values.tbTitle);
               setSubmitting(false);
             })
             .catch((error) => setMessage("Something went wrong."));
