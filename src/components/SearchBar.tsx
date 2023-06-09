@@ -29,7 +29,7 @@ export default function SearchBar<T>({
   }
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    const searchResult = searchMethod(searchTerm).then(result => responseCatcher(result));
+    searchMethod(searchTerm).then(result => responseCatcher(result));
   }
  
   return (

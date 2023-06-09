@@ -7,6 +7,7 @@ import { EventPage } from "./pages/eventPage";
 import { Profile } from "./pages/profile";
 import EventBrowser from "./pages/eventBrowser";
 import BuyTicketsPage from "./pages/buytickets";
+import { EventManagementPage } from "./pages/eventManagement";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/event/:id" element={<EventPage />} />
           <Route path="/event/:id/tickets" element={<BuyTicketsPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/eventmanagement" element={<EventManagementPage />} />
         </Routes>
       </div>
     </>

@@ -125,6 +125,7 @@ export function RegisterPage(): JSX.Element {
                       name="tbUsername"
                       placeholder="Username"
                       autoComplete="username"
+                      type="text"
                     />
                     {errors.tbUsername && touched.tbUsername ? (
                       <div>{errors.tbUsername}</div>

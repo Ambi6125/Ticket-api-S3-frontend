@@ -56,7 +56,7 @@ function LogInForm({ onLogin }: LogInFormProps): JSX.Element {
                           <div>{errors.tbPassword}</div>
                         ) : null}
                       </div>
-                      <button type="submit">Log in</button>
+                      <button className="standard-button" type="submit">Log in</button>
                     </div>
                   </Form>
                 )}

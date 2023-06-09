@@ -46,6 +46,16 @@ export const EventAPI = {
       })
       .catch((error) => console.log(error));
   },
+
+  CreateEvent: (title: string, location: string, moment: Date, totalTickets: number ): Promise<CreateEventResponse> => {
+    return axios
+    .post(url, {title, location, moment, totalTickets}, { headers: { Accept: "application/json" } })
+    .then((response) => {
+      return response.data;
+    })
+    .catch(error => console.log(error)
+    );
+  },
 };
 
 export interface EventObject {
@@ -64,6 +74,10 @@ export interface GetEventRequest {
 
 export interface GetEventsResponse {
   events: EventObject[];
+}
+
+interface CreateEventResponse {
+  id: number;
 }
 
 export default EventAPI;
