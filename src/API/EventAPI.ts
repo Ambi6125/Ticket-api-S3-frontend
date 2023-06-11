@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { useMemo } from "react";
 import { constant } from "cypress/types/lodash";
 
 const url = "http://localhost:8080/events/";
@@ -40,28 +41,66 @@ export const EventAPI = {
     return axios
       .get(concatURL, { headers: { Accept: "application/json" } })
       .then((response) => {
+        console.log("Response:");
+        console.log(response);
+        console.log("Response.data:");
+        console.log(response.data);
+        console.log("Response.data.events:");
+        console.log(response.data.events);
+        
         const resultArray: any = response.data.events;
-        console.log(resultArray);
         return resultArray;
       })
       .catch((error) => console.log(error));
   },
 
-  CreateEvent: (title: string, location: string, moment: Date, totalTickets: number ): Promise<CreateEventResponse> => {
+  GetAll: (): Promise<GetEventsResponse> => {
     return axios
-    .post(url, {title, location, moment, totalTickets}, { headers: { Accept: "application/json" } })
-    .then((response) => {
-      return response.data;
-    })
-    .catch(error => console.log(error)
-    );
+      .get(url, { headers: { Accept: "application/json" } })
+      .then((response) => {
+        console.log("Response:");
+        console.log(response); //Output: {data: {…}, status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
+        console.log("Response.data:");
+        console.log(response.data); //Output: {events: Array(16)}
+        console.log("Response.data.events:");
+        console.log(response.data.events); //Output: (16) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+        
+
+        const resultArray: any = response.data;
+        return resultArray;
+      })
+      .catch((error) => console.log(error));
+  },
+
+  CreateEvent: (
+    title: string,
+    location: string,
+    moment: Date,
+    totalTickets: number
+  ): Promise<CreateEventResponse> => {
+    return axios
+      .post(
+        url,
+        { title, location, moment, totalTickets },
+        { headers: { Accept: "application/json" } }
+      )
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.log(error));
+  },
+
+  UpdateEvent: (object: EventObject): Promise<AxiosResponse<any>> => {
+    return axios
+      .put(url, object, { headers: { Accept: "application/json" } })
+      .then((response) => response)
+      .catch((error) => error);
   },
 };
 
 export interface EventObject {
   id: number;
   title: string;
-  artist: string;
   location: string;
   moment: Date;
   totalTickets: number;

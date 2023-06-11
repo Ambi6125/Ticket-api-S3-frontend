@@ -8,6 +8,7 @@ import { Profile } from "./pages/profile";
 import EventBrowser from "./pages/eventBrowser";
 import BuyTicketsPage from "./pages/buytickets";
 import { EventManagementOldComponent } from "./components/EventCreator";
+import EventManagementPage from "./pages/eventManagementPage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route
             path="/eventmanagement"
-            element={<EventManagementOldComponent />}
+            element={<EventManagementPage />}
           />
         </Routes>
       </div>

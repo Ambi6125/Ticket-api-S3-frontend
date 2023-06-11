@@ -6,7 +6,6 @@ export const AccountAPI = {
     GetAccountById: (id: number): Promise<GetAccountResponse> => {
         return axios.get(`${url}id/${id}`)
         .then((response) => {
-            console.log(response.data);
             return response.data
         })
         .catch(error => console.log(error))
@@ -16,7 +15,6 @@ export const AccountAPI = {
         console.log("Searching: " + username + " at " + concatURL);
         return axios.get(concatURL, { headers: {Accept: 'application/json'}})
         .then((response) => {
-            console.log("Succes. See network tab for payload.");
             return response.data.account;
         })
         .catch(error => {

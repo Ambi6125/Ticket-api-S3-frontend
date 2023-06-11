@@ -18,7 +18,7 @@ interface EventItemProps {
  * @returns A functional, reusable component.
  */
 function EventItemBox({ event }: EventItemProps): JSX.Element {
-  const { id, title, artist, location, totalTickets, remainingTickets } = event;
+  const { id, title, location, totalTickets, remainingTickets } = event;
 
   const moment = new Date(event.moment);
 
@@ -27,7 +27,7 @@ function EventItemBox({ event }: EventItemProps): JSX.Element {
   return (
     <div className="eventBox">
       <h2>{title}</h2>
-      <p>{TokenManager.getClaims().roles?.includes("ADMIN") && id}</p>
+      <p>{TokenManager.getClaims()?.roles?.includes("ADMIN") && id}</p>
       <br />
       <p>
         {`${location},\nat ${moment.getDay()}/${moment.getMonth() + 1}/${moment.getFullYear()} - ${moment.getHours()}:${moment.getMinutes()}`}

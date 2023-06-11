@@ -1,34 +1,38 @@
-import { EventObject } from "../API/EventAPI";
-import { useTable } from "react-table";
-
-const columns = [
-  {
-    Header: "ID",
-    accessor: "id"
-  },
-  {
-    Header: "Title",
-    accessor: "title"
-  },
-  {
-    Header: "Location",
-    accessor: "location"
-  },
-  {
-    Header: "Moment",
-    accessor: "moment"
-  },
-  {
-    Header: "Total tickets",
-    accessor: "totalTickets"
-  },
-  {
-    Header: "Remaining tickets",
-    accessor: "remainingTickets"
-  },
-];
+import EventAPI, { EventObject } from "../API/EventAPI";
+import { useState } from "react";
 
 interface EventTableProps {
   events: EventObject[];
 }
-export default function EventTable({ events }: EventTableProps): JSX.Element {}
+
+//TODO: Event get request processes as unauthorized.
+export default function EventTable({ events }: EventTableProps): JSX.Element {
+  return (
+    <div className="table-container">
+      <table className="table-display">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Moment</th>
+            <th>Total Tickets</th>
+            <th>Remaining Tickets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {events.map((event) => (
+            <tr className="glow-on-hover" key={event.id}>
+              <td>{event.id}</td>
+              <td>{event.title}</td>
+              <td>{event.location}</td>
+              <td>{event.moment.toString()}</td>
+              <td>{event.totalTickets}</td>
+              <td>{event.remainingTickets}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
