@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { useMemo } from "react";
 import { constant } from "cypress/types/lodash";
+import TokenManager from "./TokenManager";
 
 const url = "http://localhost:8080/events/";
 
@@ -41,12 +42,6 @@ export const EventAPI = {
     return axios
       .get(concatURL, { headers: { Accept: "application/json" } })
       .then((response) => {
-        console.log("Response:");
-        console.log(response);
-        console.log("Response.data:");
-        console.log(response.data);
-        console.log("Response.data.events:");
-        console.log(response.data.events);
         
         const resultArray: any = response.data.events;
         return resultArray;
@@ -55,16 +50,15 @@ export const EventAPI = {
   },
 
   GetAll: (): Promise<GetEventsResponse> => {
+    const token = TokenManager.getAccessToken();
+    console.log("Token:", token);
+    const headers = {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`
+    }
     return axios
-      .get(url, { headers: { Accept: "application/json" } })
+      .get(url, { headers })
       .then((response) => {
-        console.log("Response:");
-        console.log(response); //Output: {data: {…}, status: 200, statusText: '', headers: AxiosHeaders, config: {…}, …}
-        console.log("Response.data:");
-        console.log(response.data); //Output: {events: Array(16)}
-        console.log("Response.data.events:");
-        console.log(response.data.events); //Output: (16) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-        
 
         const resultArray: any = response.data;
         return resultArray;

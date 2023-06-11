@@ -341,12 +341,36 @@ body {
 .table-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .table-display{
   border-style:groove;
   border-width: 2%;
   border-color: gainsboro;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-display th,
+.table-display td {
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-display th:first-child,
+.table-display td:first-child {
+  padding-left: 16px;
+}
+
+.table-display th:last-child,
+.table-display td:last-child {
+  padding-right: 16px;
 }
 
 .table-display th {
@@ -354,8 +378,31 @@ body {
   color: white;
 }
 
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pagination button {
+  background-color: #4cb2fb;
+  border-style: outset;
+  border-color: #80bfff;
+  color: white;
+}
+
+.pagination button.active {
+  border-style: inset;
+  background-color: #bdcff5;
+}
+
+.pagination button:disabled {
+  background-color: #6fa5ca;
+  color: gainsboro;
+}
+
 .glow-on-hover:hover {
   box-shadow: 0px 0px 1rem cyan;
   background-color: rgb(240, 240, 253);
-  color: #4cb2fb  ;
+  color: #4cb2fb;
 }

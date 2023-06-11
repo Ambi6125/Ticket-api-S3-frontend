@@ -9,6 +9,7 @@ import EventBrowser from "./pages/eventBrowser";
 import BuyTicketsPage from "./pages/buytickets";
 import { EventManagementOldComponent } from "./components/EventCreator";
 import EventManagementPage from "./pages/eventManagementPage";
+import EventEditPage from "./pages/editEvent";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             element={<EventManagementPage />}
           />
         </Routes>
+        <Route path="/event/:id/edit" element={< EventEditPage />} />
       </div>
     </>
   );
