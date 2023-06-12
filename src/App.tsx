@@ -24,12 +24,9 @@ function App() {
           <Route path="/event/:id" element={<EventPage />} />
           <Route path="/event/:id/tickets" element={<BuyTicketsPage />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/eventmanagement"
-            element={<EventManagementPage />}
-          />
+          <Route path="/eventmanagement" element={<EventManagementPage />} />
+          <Route path="/event/:id/edit" element={<EventEditPage />} />
         </Routes>
-        <Route path="/event/:id/edit" element={< EventEditPage />} />
       </div>
     </>
   );

@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router";
 import EventAPI, { EventObject } from "../API/EventAPI";
 import { useState } from "react";
+import { TimeConverter } from "../misc/TimeConverter";
 
 interface EventTableProps {
   events: EventObject[];
@@ -15,6 +17,9 @@ export default function EventTable({ events }: EventTableProps): JSX.Element {
     currentPage: 1,
     itemsPerPage: 10, // Number of items to display per page
   });
+
+
+  const navigate = useNavigate();
 
   const [filterValue, setFilterValue] = useState<string>("");
 
@@ -39,10 +44,15 @@ export default function EventTable({ events }: EventTableProps): JSX.Element {
     setPagination((prevState) => ({ ...prevState, currentPage: pageNumber }));
   };
 
+  //Handle row click
+  const handleRowClick = (eventId: number) => {
+    navigate(`/event/${eventId}/edit`)
+  }
+
   const totalPages = Math.ceil(events.length / itemsPerPage);
 
   return (
-    <div className="table-container">
+    <div className="table-container fixed-table-size">
       <label></label>
       <input
         type="text"
@@ -62,11 +72,11 @@ export default function EventTable({ events }: EventTableProps): JSX.Element {
         </thead>
         <tbody>
           {eventsToDisplay.map((event) => (
-            <tr className="glow-on-hover" key={event.id}>
+            <tr className="glow-on-hover" key={event.id} onClick={() => handleRowClick(event.id)}>
               <td>{event.id}</td>
               <td>{event.title}</td>
               <td>{event.location}</td>
-              <td>{event.moment.toString()}</td>
+              <td>{TimeConverter.convertISOtoDisplay(event.moment.toString())}</td>
               <td>{event.totalTickets}</td>
               <td>{event.remainingTickets}</td>
             </tr>

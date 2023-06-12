@@ -278,7 +278,6 @@ body {
   padding-bottom: 0.3%;
 }
 
-
 .purchase-ticket-container input {
   width: 40%;
   border-color: #80bfff;
@@ -304,7 +303,6 @@ body {
 }
 
 .create-event-container .form-container {
-  
   padding: 5%;
   border-style: outset;
   border-radius: 3.5%;
@@ -313,16 +311,15 @@ body {
   align-self: center;
   width: 50%;
   color: white;
-  background-color:rgb(70, 182, 219);
+  background-color: rgb(70, 182, 219);
   box-shadow: 0px 2px 10px lightblue;
-  
 }
 
 .create-event-container .form-container input {
   border-color: #80bfff;
   color: #757575;
   margin: 0.6%;
-  width:95%;
+  width: 95%;
   border-style: none;
 }
 
@@ -336,6 +333,66 @@ body {
   align-items: flex-start;
 }
 
+.update-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+.update-form .form-control {
+  margin-bottom: 15px;
+}
+
+.update-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.update-form input[type="text"],
+.update-form button,
+.update-form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.update-form .error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.update-form button[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+.update-form button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.update-form th,
+.update-form td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.update-form th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.update-form tr.glow-on-hover:hover {
+  background-color: #f5f5f5;
+}
+
 /* Tables */
 
 .table-container {
@@ -344,8 +401,13 @@ body {
   align-items: center;
 }
 
-.table-display{
-  border-style:groove;
+.fixed-table-size {
+  width: 70%;
+  max-width: 70%;
+}
+
+.table-display {
+  border-style: groove;
   border-width: 2%;
   border-color: gainsboro;
   margin-top: 1rem;
@@ -360,7 +422,10 @@ body {
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.table-display tbody tr:nth-child(even) {
+  background-color: rgb(239, 233, 233);
 }
 
 .table-display th:first-child,
@@ -403,6 +468,6 @@ body {
 
 .glow-on-hover:hover {
   box-shadow: 0px 0px 1rem cyan;
-  background-color: rgb(240, 240, 253);
+  background-color: rgb(240, 240, 253) !important;
   color: #4cb2fb;
 }

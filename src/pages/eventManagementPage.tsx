@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import EventAPI, { EventObject } from "../API/EventAPI";
 import EventTable from "../components/EventTable";
+import TokenManager from "../API/TokenManager";
+import { useNavigate } from "react-router";
 
 export default function EventManagementPage(): JSX.Element {
   const [data, setData] = useState<EventObject[]>([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
+
+    if(!TokenManager.getClaims()?.roles?.includes('ADMIN')) {
+      navigate("/profile")
+    }
+
     LoadData();
   }, []);
 
