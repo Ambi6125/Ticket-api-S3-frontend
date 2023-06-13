@@ -7,9 +7,10 @@ import { EventPage } from "./pages/eventPage";
 import { Profile } from "./pages/profile";
 import EventBrowser from "./pages/eventBrowser";
 import BuyTicketsPage from "./pages/buytickets";
-import { EventManagementOldComponent } from "./components/EventCreator";
+import { EventCreator } from "./components/EventCreator";
 import EventManagementPage from "./pages/eventManagementPage";
 import EventEditPage from "./pages/editEvent";
+import CreateEventPage from "./pages/createEvent";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/eventmanagement" element={<EventManagementPage />} />
           <Route path="/event/:id/edit" element={<EventEditPage />} />
+          <Route path="/event/create" element={<CreateEventPage />} />
         </Routes>
       </div>
     </>

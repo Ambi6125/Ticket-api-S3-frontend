@@ -113,4 +113,6 @@ interface CreateEventResponse {
   id: number;
 }
 
+
+
 export default EventAPI;

@@ -1,24 +1,12 @@
-import { Fragment, useEffect, useState } from "react";
-import EventAPI, { EventObject, GetEventsResponse } from "../API/EventAPI";
-import SearchBar from "./SearchBar";
-import EventList from "./Events";
+import { useEffect, useState } from "react";
+import EventAPI, { EventObject } from "../API/EventAPI";
 import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import TokenManager from "../API/TokenManager";
 import { useNavigate } from "react-router";
-import { values } from "cypress/types/lodash";
 
-/**
- * @deprecated
- */
-export function EventManagementOldComponent(): JSX.Element {
-  const [searchResult, setSearchResult] = useState<EventObject[]>([]);
+export function EventCreator(): JSX.Element {
   const [responseMessage, setMessage] = useState<string>("");
-
-  //TODO: In case of a future search bar, use this to process results.
-  const processSearchResults = (data: GetEventsResponse) => {
-    setSearchResult(data.events);
-  };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -47,76 +35,96 @@ export function EventManagementOldComponent(): JSX.Element {
       .max(60, "No more than 60 characters")
       .required("Required field"),
     dtpMoment: Yup.date()
-      .test(
-        "is-one-week-from-now",
-        "Must be more than 7 days from now",
-        (value: Date | undefined) => {
-          const oneWeek: Date = new Date();
-          oneWeek.setDate(oneWeek.getDate() + 7);
-          return value! >= oneWeek;
-        }
-      )
+      .test("not-today", "Must be more than 1 day from now", (value: Date | undefined) => {
+        const tomorrow: Date = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return value! >= tomorrow;
+      })
       .required("Required"),
     nmudTotalTickets: Yup.number().min(10).max(99999),
   });
 
   return (
     <>
-      <Formik
-        validationSchema={validationSchema}
-        initialValues={{
-          tbTitle: "",
-          tbLocation: "",
-          dtpMoment: Date.now(),
-          nmudTotalTickets: 50,
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          const correctDate: Date = new Date(values.dtpMoment);
-          handleSubmit(
-            values.tbTitle,
-            values.tbLocation,
-            correctDate,
-            values.nmudTotalTickets
-          )
-            .then(() => {
-              setMessage("Succesfully created " + values.tbTitle);
-              setSubmitting(false);
-            })
-            .catch((error) => setMessage("Something went wrong."));
-        }}
-      >
-        <Form>
-          <div className="create-event-container">
-            <h2>{responseMessage}</h2>
-            <div className="form-container">
-              <div className="input-container">
-                <label>Title</label>
-                <Field name="tbTitle" placeholder="Title" type="text" />
+      <div>
+        <h2>Create event</h2>
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={{
+            tbTitle: "",
+            tbLocation: "",
+            dtpMoment: new Date().toISOString().slice(0, 16), // Set initial value as a string in the format "YYYY-MM-DDTHH:mm"
+            nmudTotalTickets: 50,
+          }}
+          onSubmit={(values, { setSubmitting }) => {
+            const correctDate: Date = new Date(values.dtpMoment);
+            handleSubmit(
+              values.tbTitle,
+              values.tbLocation,
+              correctDate,
+              values.nmudTotalTickets
+            )
+              .then(() => {
+                setMessage("Successfully created " + values.tbTitle);
+                setSubmitting(false);
+              })
+              .catch((error) => setMessage("Something went wrong."));
+          }}
+        >
+          <Form>
+            <div className="create-event-container">
+              <h2>{responseMessage}</h2>
+              <div className="form-container">
+                <div className="input-container">
+                  <label>Title</label>
+                  <Field name="tbTitle" placeholder="Title" type="text" />
+                  <ErrorMessage
+                    name="tbTitle"
+                    component="div"
+                    className="error-message"
+                  />
+                </div>
+                <div className="input-container">
+                  <label>Location</label>
+                  <Field name="tbLocation" placeholder="Location" type="text" />
+                  <ErrorMessage
+                    name="tbLocation"
+                    component="div"
+                    className="error-message"
+                  />
+                </div>
+                <div className="input-container">
+                  <label>Date & Time</label>
+                  <Field name="dtpMoment" type="datetime-local" />
+                  <ErrorMessage
+                    name="dtpMoment"
+                    component="div"
+                    className="error-message"
+                  />
+                </div>
+                <div className="input-container">
+                  <label>Available Tickets</label>
+                  <Field
+                    type="number"
+                    name="nmudTotalTickets"
+                    placeholder="Tickets available"
+                    min={10}
+                    max={99999}
+                  />
+                  <ErrorMessage
+                    name="nmudTotalTickets"
+                    component="div"
+                    className="error-message"
+                  />
+                </div>
               </div>
-              <div className="input-container">
-                <Field name="tbLocation" placeholder="Location" type="text" />
-              </div>
-              <div className="input-container">
-                <label>Date & time:</label>
-                <Field name="dtpMoment" type="datetime-local" />
-              </div>
-              <div className="input-container">
-                <label>Available tickets</label>
-                <Field
-                  type="number"
-                  name="nmudTotalTickets"
-                  placeholder="Tickets available"
-                  min={10}
-                  max={99999}
-                />
-              </div>
+              <button type="submit" className="standard-button">
+                Create
+              </button>
             </div>
-            <button type="submit" className="standard-button">
-              Create
-            </button>
-          </div>
-        </Form>
-      </Formik>
+          </Form>
+        </Formik>
+      </div>
     </>
   );
 }

@@ -85,7 +85,7 @@ export default function EventEditPage(): JSX.Element {
                 name="moment"
                 selected={values.moment}
                 onChange={(date) => setFieldValue("moment", date)}
-                dateFormat="yyyy-MM-dd HH:mm"
+                dateFormat="dd-MM-yyyy HH:mm"
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={15}

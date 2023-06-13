@@ -3,12 +3,18 @@ import EventAPI, { EventObject } from "../API/EventAPI";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import TokenManager from "../API/TokenManager";
+import { TicketAPI, BuyTicketsRequest } from "../API/TicketAPI";
+import { event } from "cypress/types/jquery";
 
 export default function BuyTicketsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const idNumber: number = parseInt(id ?? "-1");
+  const navigate = useNavigate();
 
   const [subject, setSubject] = useState<EventObject | undefined>();
+  const [responseMessage, setResponseMessage] = useState<string | null>(null);
+  const [amount, setAmount] = useState<number>(1);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -33,20 +39,47 @@ export default function BuyTicketsPage(): JSX.Element {
     return Math.max(5, Math.floor(remainingTickets / 4));
   }
 
+  const handleBuyClick = () => {
+    const userId = TokenManager.getClaims()?.accountId;
+    const eventId = subject?.id;
+    const quantity = amount;
+
+    const request: BuyTicketsRequest = {
+      buyerId: userId,
+      eventId: eventId!,
+      amount: quantity,
+    };
+
+    TicketAPI.BuyTickets(request)
+      .then(() => {
+        alert(
+          `Congratulations on your purchase of ${quantity} tickets for ${subject?.title}!`
+        );
+        navigate("/profile");
+      })
+      .catch((error) => {
+        alert("Something went wrong.");
+        console.log("Error purchasing:", error);
+      });
+  };
+
   return (
     <>
-      {subject && (
-        <div className="purchase-ticket-container">
-          <h2>Purchase Tickets for {subject.title}</h2>
-          <input
-            type="number"
-            min={1}
-            max={getMaxValue(subject.remainingTickets)}
-            placeholder="Amount"
-          />
-          <button onClick={() => console.log("Not implemented")}>Buy</button>
-        </div>
-      )}
+      {responseMessage ||
+        (subject && (
+          <div className="purchase-ticket-container">
+            <h2>Purchase Tickets for {subject.title}</h2>
+            <input
+              type="number"
+              min={1}
+              max={getMaxValue(subject.remainingTickets)}
+              placeholder="Amount"
+              onChange={(event) => setAmount(parseInt(event.target.value))}
+            />
+            <button onClick={handleBuyClick}>Buy</button>
+            {responseMessage && <p>{responseMessage}</p>}
+          </div>
+        ))}
     </>
   );
 }
