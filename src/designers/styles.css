@@ -261,7 +261,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color:skyblue;
+  background-color: skyblue;
   border: inset;
   border-radius: 1rem;
 }
@@ -488,4 +488,61 @@ body {
   box-shadow: 0px 0px 1rem cyan;
   background-color: rgb(240, 240, 253) !important;
   color: #4cb2fb;
+}
+
+/* Statistics */
+
+.statistics-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.select-statistic-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.select-statistic-container input, .select-statistic-container select {
+  border-color: #84ccff ;
+  border-style: solid;
+  border-radius: 10%;
+}
+
+.results-container {
+  background-color: #4cb2fb;
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+
+.results-container table {
+  width: 100%;
+  color: black;
+  border-collapse: collapse;
+}
+
+.results-container th,
+.results-container td {
+  padding: 10px;
+  text-align: left;
+}
+
+.results-container th {
+  background-color: #e0e0e0;
+}
+
+.results-container tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
+
+.results-container tr:nth-child(even) {
+  background-color: #ffffff;
 }

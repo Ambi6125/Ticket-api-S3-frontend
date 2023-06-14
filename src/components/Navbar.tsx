@@ -25,6 +25,7 @@ export default function Navbar() {
             {!TokenManager.getAccessToken() && <Anchor href="/register">Register</Anchor>}
             {(TokenManager.getAccessToken() && TokenManager.getClaims()?.roles?.includes("ADMIN")) && <Anchor href="/eventmanagement">Manage Events</Anchor> }
             {(TokenManager.getAccessToken() && TokenManager.getClaims()?.roles?.includes("ADMIN")) && <Anchor href="/event/create">Create Event</Anchor>}
+            {(TokenManager.getAccessToken() && TokenManager.getClaims()?.roles?.includes("ADMIN")) && <Anchor href="/statistics">Statistics</Anchor>}
         </ul>
     </nav>
     )

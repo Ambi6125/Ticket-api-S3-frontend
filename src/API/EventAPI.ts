@@ -6,7 +6,7 @@ import TokenManager from "./TokenManager";
 const url = "http://localhost:8080/events/";
 
 export const EventAPI = {
-  GetEventById: (id: number): Promise<GetEventRequest> => {
+  GetEventById: (id: number): Promise<GetEventResponse> => {
     return axios
       .get(url + id.toString())
       .then((response) => {
@@ -17,7 +17,7 @@ export const EventAPI = {
         console.log(error);
       });
   },
-  GetEventByTitle: (title: string): Promise<GetEventRequest> => {
+  GetEventByTitle: (title: string): Promise<GetEventResponse> => {
     const concatURL = url + title;
     return axios
       .get(concatURL)
@@ -27,7 +27,7 @@ export const EventAPI = {
       })
       .catch((error) => console.log(error));
   },
-  GetEventByLocation: (location: string): Promise<GetEventRequest> => {
+  GetEventByLocation: (location: string): Promise<GetEventResponse> => {
     const concatURL = url + "location/" + location;
     return axios
       .get(concatURL)
@@ -88,6 +88,13 @@ export const EventAPI = {
       .then((response) => response)
       .catch((error) => error);
   },
+
+  GetRandom: (): Promise<GetEventsResponse> => {
+    return axios
+      .get(url + "random")
+      .then((response) => response.data)
+      .catch((error) => console.log("Error getting random events:", error));
+  },
 };
 
 export interface EventObject {
@@ -99,7 +106,7 @@ export interface EventObject {
   remainingTickets: number;
 }
 
-export interface GetEventRequest {
+export interface GetEventResponse {
   event: EventObject;
 }
 

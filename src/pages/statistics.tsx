@@ -10,8 +10,7 @@ const options: Option = {
 };
 
 export function StatisticsPage(): JSX.Element {
-  const [selectedOption, setSelectedOption] =
-    useState<string>("Tickets Bought");
+  const [selectedOption, setSelectedOption] = useState<string>("Tickets Bought");
   const [results, setResults] = useState<AccountRanking[]>([]);
   const [inputValue, setInputValue] = useState<number>(0);
 
@@ -26,19 +25,20 @@ export function StatisticsPage(): JSX.Element {
   const handleFetchData = async () => {
     const fetchData = options[selectedOption];
     if (fetchData) {
-      fetchData(inputValue)
-        .then((response) => {
-          console.log("Response: ", response);
-          setResults(response);
-        })
-        .catch((error) => console.log("Error rendering results:", error));
+      try {
+        const response = await fetchData(inputValue);
+        console.log("Response: ", response);
+        setResults(response);
+      } catch (error) {
+        console.log("Error rendering results:", error);
+      }
     }
   };
 
   return (
     <div className="statistics-page">
       <h1>Statistics Page</h1>
-      <div className="select-container">
+      <div className="select-statistic-container">
         <select value={selectedOption} onChange={handleOptionChange}>
           {Object.keys(options).map((option) => (
             <option key={option} value={option}>
@@ -47,15 +47,26 @@ export function StatisticsPage(): JSX.Element {
           ))}
         </select>
         <input type="number" value={inputValue} onChange={handleInputChange} />
-        <button onClick={handleFetchData}>Fetch Data</button>
+        <button className="standard-button" onClick={handleFetchData}>Fetch Data</button>
       </div>
       <div className="results-container">
         <h2>Results</h2>
-        <ul>
-          {results.map((result) => (
-            <li key={result.username}>{result.username}</li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Ticket Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((result) => (
+              <tr key={result.username}>
+                <td>{result.username}</td>
+                <td>{result.ticketCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
