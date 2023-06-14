@@ -11,6 +11,7 @@ import { EventCreator } from "./components/EventCreator";
 import EventManagementPage from "./pages/eventManagementPage";
 import EventEditPage from "./pages/editEvent";
 import CreateEventPage from "./pages/createEvent";
+import { StatisticsPage } from "./pages/statistics";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/eventmanagement" element={<EventManagementPage />} />
           <Route path="/event/:id/edit" element={<EventEditPage />} />
           <Route path="/event/create" element={<CreateEventPage />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
         </Routes>
       </div>
     </>

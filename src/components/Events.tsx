@@ -3,6 +3,7 @@ import { TICKET_PERCENTAGE_THRESHOLD } from "../misc/GLOBAL";
 import { Link } from "react-router-dom";
 import { EventObject } from "../API/EventAPI";
 import TokenManager from "../API/TokenManager";
+import { TimeConverter } from "../misc/TimeConverter";
 
 interface EventListProps {
   items: EventObject[];
@@ -30,7 +31,9 @@ function EventItemBox({ event }: EventItemProps): JSX.Element {
       <p>{TokenManager.getClaims()?.roles?.includes("ADMIN") && id}</p>
       <br />
       <p>
-        {`${location},\nat ${moment.getDay()}/${moment.getMonth() + 1}/${moment.getFullYear()} - ${moment.getHours()}:${moment.getMinutes()}`}
+        {`${location},\nat ${TimeConverter.convertISOtoDisplay(
+          event.moment.toString()
+        )} - ${moment.getHours()}:${moment.getMinutes()}`}
       </p>
       {ticketThreshold < TICKET_PERCENTAGE_THRESHOLD && ticketThreshold > 0 && (
         <p>Limited tickets left!</p>

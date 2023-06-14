@@ -38,11 +38,10 @@ export const EventAPI = {
       .catch((error) => console.log(error));
   },
   GetEventsOnSearch: (text: string): Promise<GetEventsResponse> => {
-    const concatURL = url + "search/" + text;
+    const concatURL = url + "search?searchQuery=" + text;
     return axios
       .get(concatURL, { headers: { Accept: "application/json" } })
       .then((response) => {
-        
         const resultArray: any = response.data.events;
         return resultArray;
       })
@@ -54,12 +53,11 @@ export const EventAPI = {
     console.log("Token:", token);
     const headers = {
       Accept: "application/json",
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    };
     return axios
       .get(url, { headers })
       .then((response) => {
-
         const resultArray: any = response.data;
         return resultArray;
       })
@@ -112,7 +110,5 @@ export interface GetEventsResponse {
 interface CreateEventResponse {
   id: number;
 }
-
-
 
 export default EventAPI;

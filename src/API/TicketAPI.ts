@@ -13,6 +13,11 @@ export interface BuyTicketsResponse {
   ids: number[];
 }
 
+export interface EventTicketCountDTO {
+  eventTitle: String;
+  ticketCount: number;
+}
+
 export const TicketAPI = {
   BuyTickets: (request: BuyTicketsRequest): Promise<BuyTicketsResponse> => {
     const token = TokenManager.getAccessToken();
@@ -28,6 +33,9 @@ export const TicketAPI = {
   },
 
   GetTicketsFromUser: (accountId: number) => {
-
-  }
+    return axios
+      .get(`${url}user/${accountId}`)
+      .then((response) => response.data.results)
+      .catch((error) => console.log(error));
+  },
 };
