@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import TokenManager from "../API/TokenManager";
 import { TicketAPI, BuyTicketsRequest } from "../API/TicketAPI";
 import { event } from "cypress/types/jquery";
+import { Client } from "@stomp/stompjs";
+import { v4 as uuidv4 } from 'uuid';
+
 
 export default function BuyTicketsPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
+  const [webSocketClient, setWebSocketClient] = useState<Client>();
   const idNumber: number = parseInt(id ?? "-1");
   const navigate = useNavigate();
 
@@ -17,7 +21,28 @@ export default function BuyTicketsPage(): JSX.Element {
 
   useEffect(() => {
     loadData();
+    constructStompClient();
+    console.log("Client on buying page: ", webSocketClient);
+    
   }, []);
+
+  const constructStompClient = () => {
+    const client: Client = new Client({
+      brokerURL: "ws://localhost:8080/ws",
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000
+    });
+
+    client.onConnect = () => {
+      client.subscribe('/topic/publicmessages', (data: any) => {
+        console.log(data);
+      })
+    }
+    
+    client.activate();
+    setWebSocketClient(client);
+  };
 
   const loadData = async () => {
     const readResult = await EventAPI.GetEventById(idNumber).then(
@@ -55,6 +80,7 @@ export default function BuyTicketsPage(): JSX.Element {
         alert(
           `Congratulations on your purchase of ${quantity} tickets for ${subject?.title}!`
         );
+        sendNotif();
         navigate("/profile");
       })
       .catch((error) => {
@@ -62,6 +88,12 @@ export default function BuyTicketsPage(): JSX.Element {
         console.log("Error purchasing:", error);
       });
   };
+
+
+  const sendNotif = () => {
+    const payload = { id: uuidv4(), text: id }
+    webSocketClient?.publish({ 'destination': '/topic/publicmessages', body: JSON.stringify(payload) });
+  }
 
   return (
     <>

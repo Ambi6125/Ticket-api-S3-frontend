@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { ErrorMessage } from "formik";
 import TokenManager from "../API/TokenManager";
 import { useNavigate } from "react-router-dom";
+import { Client } from "@stomp/stompjs";
+import { v4 as uuidv4 } from 'uuid';
+import { cli } from "cypress";
 
 interface EventDetailsProps {
   target: EventObject;
@@ -31,6 +34,7 @@ function EventDetails({ target }: EventDetailsProps): JSX.Element {
       {TokenManager.getAccessToken() && (
         <button onClick={handleBuyTicketsClick}>Buy Tickets</button>
       )}
+      <p>Tickets left: {target.remainingTickets}</p>
     </div>
   );
 }
@@ -38,9 +42,12 @@ function EventDetails({ target }: EventDetailsProps): JSX.Element {
 export function EventPage(): JSX.Element {
   const [subject, setSubject] = useState<EventObject>();
   const [errorMsg, setError] = useState<string>("");
+  const [webSocketClient, setWebSocketClient] = useState<Client>();
   const { id } = useParams<{ id: string }>();
   useEffect(() => {
     loadData();
+    constructStompClient();
+    
   }, []);
   const loadData = async () => {
     console.log(`Viewing event ${id}`);
@@ -60,6 +67,41 @@ export function EventPage(): JSX.Element {
       }
     }
   };
+
+  const constructStompClient = () => {
+    const client: Client = new Client({
+      brokerURL: "ws://localhost:8080/ws",
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000
+    });
+
+    client.onConnect = () => {
+      client.subscribe('/topic/publicmessages', (data: any) => {
+        console.log(data);
+        onMessageReceived(data);
+      })
+    }
+    
+    client.activate();
+    setWebSocketClient(client);
+  };
+
+  const sendNotif = () => {
+    const payload = { id: uuidv4(), text: id }
+    webSocketClient?.publish({ 'destination': '/topic/publicmessages', body: JSON.stringify(payload) });
+  }
+
+  const onMessageReceived = (data: any) => {
+    const affectedId = JSON.parse(data.body)
+    console.log("Data: ", data);
+    console.log(data.body);
+    
+    if(affectedId.text === id)
+    {
+      loadData();
+    }
+  } 
 
   return (
     <>
