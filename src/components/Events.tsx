@@ -33,7 +33,7 @@ function EventItemBox({ event }: EventItemProps): JSX.Element {
       <p>
         {`${location},\nat ${TimeConverter.convertISOtoDisplay(
           event.moment.toString()
-        )} - ${moment.getHours()}:${moment.getMinutes()}`}
+        )} - ${TimeConverter.convertISOTimetoDisplay(event.moment.toString())}`}
       </p>
       {ticketThreshold < TICKET_PERCENTAGE_THRESHOLD && ticketThreshold > 0 && (
         <p>Limited tickets left!</p>

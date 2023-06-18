@@ -88,6 +88,16 @@ body {
   box-shadow: 0.3rem 4px 40px rgb(161, 220, 225);
 }
 
+.homeText {
+  width: 80%;
+  padding-left: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 /* Event search page */
 
 .eventBrowserContainer {
@@ -210,6 +220,7 @@ body {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
@@ -219,6 +230,15 @@ body {
 
 .event-details-container p {
   margin-bottom: 0;
+}
+
+.event-details-container button {
+  width: 20rem;
+  background-color: #4557a0;
+}
+
+.event-details-container button:hover {
+  background-color: #4cb2fb;
 }
 
 /* Profile Page */
@@ -509,8 +529,9 @@ body {
   font-size: 14px;
 }
 
-.select-statistic-container input, .select-statistic-container select {
-  border-color: #84ccff ;
+.select-statistic-container input,
+.select-statistic-container select {
+  border-color: #84ccff;
   border-style: solid;
   border-radius: 10%;
 }
@@ -521,7 +542,6 @@ body {
   padding: 20px;
   border-radius: 5px;
 }
-
 
 .results-container table {
   width: 100%;

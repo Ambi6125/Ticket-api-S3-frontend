@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
 import { v4 as uuidv4 } from 'uuid';
 import { cli } from "cypress";
+import { TimeConverter } from "../misc/TimeConverter";
 
 interface EventDetailsProps {
   target: EventObject;
@@ -30,9 +31,9 @@ function EventDetails({ target }: EventDetailsProps): JSX.Element {
           dateTime.getMonth() + 1
         }/${dateTime.getFullYear()}`}
       </p>
-      <p>Time: {`${dateTime.getHours()}:${dateTime.getMinutes()}`}</p>
+      <p>Time: {`${TimeConverter.convertISOTimetoDisplay(dateTime.toString())}`}</p>
       {TokenManager.getAccessToken() && (
-        <button onClick={handleBuyTicketsClick}>Buy Tickets</button>
+        <button className="standard-button" onClick={handleBuyTicketsClick}>Buy Tickets</button>
       )}
       <p>Tickets left: {target.remainingTickets}</p>
     </div>

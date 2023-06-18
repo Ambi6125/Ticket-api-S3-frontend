@@ -17,7 +17,7 @@ export default function Navbar() {
     return (
     <nav className="nav">
         <Link to="/" className="site-title">
-            Ticket Exchange
+            ConcertTix
         </Link>
         <ul>
             <Anchor href="/events">Events</Anchor>

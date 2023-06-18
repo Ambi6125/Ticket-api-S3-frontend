@@ -108,7 +108,7 @@ export default function BuyTicketsPage(): JSX.Element {
               placeholder="Amount"
               onChange={(event) => setAmount(parseInt(event.target.value))}
             />
-            <button onClick={handleBuyClick}>Buy</button>
+            <button className="standard-button" onClick={handleBuyClick}>Buy</button>
             {responseMessage && <p>{responseMessage}</p>}
           </div>
         ))}
